@@ -11,7 +11,11 @@
     "build": "tsc --outdir ./dist",
     "start": "npm run build && node dist/index.js",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "typeCheck": "tsc --noEmit",
+    "migrate:create": "ts-node src/scripts/migrate-generate.ts",
+    "migrate:generate": "DATABASE_URL='postgresql://admin:admin@localhost:8888/localdb?schema=public' prisma migrate dev --schema prisma/schema.prisma",
+    "migrate:test": "DATABASE_URL='postgresql://admin:admin@localhost:8889/testdb?schema=public' prisma migrate dev --schema prisma/schema.prisma"
   },
   "devDependencies": {
     "@types/express": "5.0.0",
