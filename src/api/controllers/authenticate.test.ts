@@ -5,6 +5,9 @@ import axios from 'axios';
 import { faker } from '@faker-js/faker';
 import { hash } from 'bcryptjs';
 import { ServerTest } from '../../test/server.test';
+import jwt from 'jsonwebtoken';
+import { env } from 'process';
+import { ENV } from '../../../env';
 
 describe('POST - Authenticate User Controller', async () => {
   const server = new ServerTest();
@@ -32,10 +35,12 @@ describe('POST - Authenticate User Controller', async () => {
       password: userData.password,
     });
     const userResponse = response.data.authenticatedUser;
+    const userToken = jwt.verify(userResponse.token, ENV.JWT_SECRET);
     const userDatabase = await prisma.user.findUniqueOrThrow({ where: { email: userData.email } });
 
     expect(userResponse.user.name).toBe(userDatabase.name);
     expect(userResponse.user.email).toBe(userDatabase.email);
     expect(userResponse.user.id).toBe(userDatabase.id);
+    expect(userToken.sub).to.be.equal(userDatabase.id);
   });
 });

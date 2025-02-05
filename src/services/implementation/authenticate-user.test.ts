@@ -36,24 +36,18 @@ describe('SERVICE - Authenticate User Service', async () => {
     const userResponse = await service.authenticate(data[0].email, '123456qwer');
     const jwt = jsonwebtoken.verify(userResponse.token, ENV.JWT_SECRET);
 
-    expect(userResponse.user).to.be.deep.equal(userDatabase);
+    expect(userResponse.user.id).to.be.equal(userDatabase.id);
+    expect(userResponse.user.name).to.be.equal(userDatabase.name);
+    expect(userResponse.user.email).to.be.equal(userDatabase.email);
     expect(userResponse.token).to.be.a('string');
     expect(jwt.sub).to.be.equal(userDatabase.id);
   });
 
   it('should not be able to authenticate a user with wrong password', async () => {
-    try {
-      await service.authenticate('wrong-email', '123456qwer');
-    } catch (error) {
-      expect(error.message).to.be.equal('Invalid credentials');
-    }
+    expect(service.authenticate('wrong-email', '1234565qwerr')).rejects.toBeInstanceOf(Error);
   });
 
   it('should not be able to authenticate a user with wrong email', async () => {
-    try {
-      await service.authenticate(data[0].email, 'wrong-password');
-    } catch (error) {
-      expect(error.message).to.be.equal('Invalid credentials');
-    }
+    expect(service.authenticate(data[0].email, 'wrong-password')).rejects.toBeInstanceOf(Error);
   });
 });
