@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express';
+import { prisma } from '../../config/prisma.database';
 
 export class HelloController {
   private constructor() {}
@@ -9,9 +9,6 @@ export class HelloController {
   }
 
   helloWorld = async (req: Request, res: Response): Promise<void> => {
-    const users = await Prisma.user.findMany();
-    console.log('all users: ', users);
-
     res.status(200).send({ message: 'hello world!' });
   };
 }

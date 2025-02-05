@@ -1,6 +1,10 @@
 import express, { Express, Request, Response } from 'express';
+import { Server } from 'node:http';
+import { UserController } from './controllers/user.controler';
 
 export class ExpressConfig {
+  private server?: Server;
+  private readonly userController = UserController.configure();
   private constructor(readonly app: Express) {}
 
   public static configure(): ExpressConfig {
@@ -9,23 +13,25 @@ export class ExpressConfig {
     return new ExpressConfig(app);
   }
 
-  public start(port: number) {
-    this.app.listen(port, () => console.log('Server is running por http://localhost:3000'));
+  public start(port: number): void {
+    this.server = this.app.listen(port, () => console.log('Server is running por http://localhost:3000'));
   }
 
-  public addGetRoute(path: string, handle: (req: Request, res: Response) => void) {
-    this.app.get(path, handle);
+  public stop(): void {
+    if (this.server) {
+      this.server.close((err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Server stopped');
+        }
+      });
+    } else {
+      console.log('Server is not running');
+    }
   }
 
-  public addPostRoute(path: string, handle: (req: Request, res: Response) => void) {
-    this.app.post(path, handle);
-  }
-
-  public addPutRoute(path: string, handle: (req: Request, res: Response) => void) {
-    this.app.put(path, handle);
-  }
-
-  public addDeleteRoute(path: string, handle: (req: Request, res: Response) => void) {
-    this.app.delete(path, handle);
+  public setupRoutes(): void {
+    this.app.post('/authenticate', this.userController.authenticate);
   }
 }

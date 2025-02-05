@@ -4,7 +4,11 @@
   "main": "index.js",
   "dependencies": {
     "@prisma/client": "6.2.1",
-    "express": "4.21.2"
+    "bcryptjs": "2.4.3",
+    "dotenv": "16.4.7",
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "zod": "3.24.1"
   },
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
@@ -15,13 +19,20 @@
     "typeCheck": "tsc --noEmit",
     "migrate:create": "ts-node src/scripts/migrate-generate.ts",
     "migrate:generate": "DATABASE_URL='postgresql://admin:admin@localhost:8888/localdb?schema=public' prisma migrate dev --schema prisma/schema.prisma",
-    "migrate:test": "DATABASE_URL='postgresql://admin:admin@localhost:8889/testdb?schema=public' prisma migrate dev --schema prisma/schema.prisma"
+    "migrate:test": "DATABASE_URL='postgresql://admin:admin@localhost:8889/testdb?schema=public' prisma migrate dev --schema prisma/schema.prisma",
+    "test": "vitest run --dir src/services/implementation",
+    "test:watch": "vitest --dir src/services/implementation",
+    "test:e2e": "vitest run --dir src/api/controllers"
   },
   "devDependencies": {
+    "@faker-js/faker": "9.4.0",
+    "@types/bcryptjs": "2.4.6",
     "@types/express": "5.0.0",
+    "@types/jsonwebtoken": "9.0.2",
     "@types/node": "22.10.9",
     "@typescript-eslint/eslint-plugin": "8.21.0",
     "@typescript-eslint/parser": "8.21.0",
+    "axios": "1.7.9",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.0.1",
     "eslint-config-standard": "17.1.0",
@@ -33,6 +44,7 @@
     "prisma": "6.3.0",
     "ts-node": "10.9.2",
     "ts-node-dev": "2.0.0",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "3.0.5"
   }
 }
