@@ -30,5 +30,9 @@
     "ts-node": "10.9.2",
     "ts-node-dev": "2.0.0",
     "typescript": "5.7.3"
-  }
+  },
+  "description": "A robust API for managing personal finances, enabling users to register bank accounts, log income and expenses, categorize transactions, generate monthly reports, and export data in XLSX format. Designed for individuals seeking a practical, organized, and efficient way to track their financial activities.",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
