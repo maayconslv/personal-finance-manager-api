@@ -11,7 +11,7 @@ jobs:
       postgres:
         image: bitnami/postgresql
         ports:
-          - 8889:5432
+          - 8888:5432
         env:
           POSTGRESQL_USERNAME: admin
           POSTGRESQL_PASSWORD: admin
@@ -27,7 +27,8 @@ jobs:
 
       - run: npm ci 
 
+      - run: npm run migrate:generate
       - run: npm run test:e2e
         env:
           JWT_SECRET: testingsecret
-          DATABASE_URL: "postgresql://admin:admin@localhost:8889/testdb?schema=public"
+          DATABASE_URL: "postgresql://admin:admin@localhost:8888/testdb?schema=public"
